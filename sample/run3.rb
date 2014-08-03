@@ -11,10 +11,10 @@ $LOAD_PATH.unshift(lib_dir)
 
 require "trips.rb"
 require "trips5.rb"
-# require "helper.rb"
+require "helper.rb"
 
-# puts "****** sample_searcher5 ******"
-# sample_searcher5
+puts "****** sample_searcher5 ******"
+sample_searcher5
 
 puts
 puts "****** animation ******"

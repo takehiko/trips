@@ -1,0 +1,4 @@
+trips
+=====
+
+Triangle Puzzle Solver

@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require "open3"
+
 module TrianglePuzzle
   module Helper; end
 end
@@ -132,6 +134,48 @@ module TrianglePuzzle::Helper
     puts sol
     puts
     exit
+  end
+
+  def exist_bin?(command)
+    result = Open3.capture3("which #{command}")
+
+    return false if result.first.empty?
+    return true if test(?f, result.first.chomp)
+    false
+  end
+
+  def examine_dependency(param = nil)
+    h = {}
+
+    ["convert", "ffmpeg"].each do |command|
+      h[command.to_sym] = exist_bin?(command)
+    end
+
+    h[:font] = false
+    if h[:convert]
+      result = Open3.capture3("convert -debug annotate xc: -font #{Hash === param && param[:font] ? param[:font] : 'Liberation-Sans-Regular'} -pointsize 24 -annotate 0 'Test' null:")
+      h[:font] = true if result[1].index("@ error").nil?
+    end
+
+    h
+  end
+
+  def dependency_ready?(*param)
+    dep = examine_dependency
+    param = dep.keys if param.empty?
+
+    if param.include?(:convert) && !dep[:convert]
+      puts "\'convert\' command is not available."
+      return false
+    elsif param.include?(:font) && !dep[:font]
+      puts "Font is not ready."
+      return false
+    elsif param.include?(:ffmpeg) && !dep[:ffmpeg]
+      puts "\'ffmpeg\' command is not available."
+      return false
+    end
+
+    true
   end
 
   def demo(msg = "")

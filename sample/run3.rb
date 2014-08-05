@@ -12,6 +12,7 @@ $LOAD_PATH.unshift(lib_dir)
 require "trips.rb"
 require "trips5.rb"
 require "helper.rb"
+include TrianglePuzzle::Helper
 
 puts "****** sample_searcher5 ******"
 sample_searcher5

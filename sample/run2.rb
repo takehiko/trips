@@ -9,6 +9,7 @@ require "trips.rb"
 require "trips5.rb"
 require "image.rb"
 require "helper.rb"
+include TrianglePuzzle::Helper
 
 s_str = "7,11,23,5,20,15,8,17,14"
 [ "3,,,6,,4,,8,7,,4,,,,5",

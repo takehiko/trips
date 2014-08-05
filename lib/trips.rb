@@ -206,6 +206,7 @@ if __FILE__ == $0
   if !ARGV.nil?
     $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__)))
     require "helper.rb"
+    include TrianglePuzzle::Helper
 
     solve_by_parameter
   end

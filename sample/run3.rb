@@ -6,20 +6,7 @@ if ARGV.first != "execute"
   exit
 end
 
-lib_dir = File.expand_path(File.join(File.dirname(__FILE__), "..", "lib"))
-$LOAD_PATH.unshift(lib_dir)
-
-require "trips.rb"
-require "trips5.rb"
-require "helper.rb"
-
-puts "****** sample_searcher5 ******"
-sample_searcher5
-
-puts
-puts "****** animation ******"
-require "animation.rb"
-
-puts
-puts "****** movie ******"
-require "movie.rb"
+Dir.glob(__FILE__.sub(/.rb$/, "_*.rb")) do |filename|
+  puts filename if $DEBUG
+  load File.expand_path(filename)
+end

@@ -62,7 +62,7 @@ module TrianglePuzzle::Helper
     s.hash[sums].each do |tab|
       tab.print_table(true)
     end
-    puts
+    # puts
   end
 
   def solve_examples
@@ -132,5 +132,15 @@ module TrianglePuzzle::Helper
     puts sol
     puts
     exit
+  end
+
+  def demo(msg = "")
+    if !msg.empty?
+      puts "****** #{msg} ******"
+    end
+    if block_given?
+      yield
+      puts
+    end
   end
 end

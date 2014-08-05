@@ -14,13 +14,14 @@ require "trips5.rb"
 require "helper.rb"
 include TrianglePuzzle::Helper
 
-puts "****** sample_searcher5 ******"
-sample_searcher5
+demo("sample_searcher5") do
+  sample_searcher5
+end
 
-puts
-puts "****** animation ******"
-require "animation.rb"
+demo("animation") do
+  require "animation.rb"
+end
 
-puts
-puts "****** movie ******"
-require "movie.rb"
+demo("movie") do
+  require "movie.rb"
+end

@@ -21,12 +21,13 @@ s_str = "7,11,23,5,20,15,8,17,14"
   "3",
   ""
 ].each do |p_str|
-  puts
-  puts "****** solve_by_parameter5(ruby lib/trips5.rb #{s_str} #{p_str}) ******"
-  t1 = Time.new
-  solve_by_parameter5([s_str, p_str])
-  t2 = Time.new
-  puts "#{t2 - t1} sec."
+  next if ARGV.first && p_str.length <= 5
+  demo("solve_by_parameter5(ruby lib/trips5.rb #{s_str} #{p_str})") do
+    t1 = Time.new
+    solve_by_parameter5([s_str, p_str])
+    t2 = Time.new
+    puts "#{t2 - t1} sec."
+  end
 end
 
 q_a = [10, 7, 7, 9, 7, 11]
@@ -34,16 +35,16 @@ sol = TrianglePuzzle::Solver.new(:sums => q_a)
 sol.start
 p_a = sol.answer.first.array.values_at(9, 7, 8, 4, 5, 6, 0, 1, 2, 3)
 
-puts
-puts "****** image.rb (q.png) ******"
-TrianglePuzzleDrawer.new(:caption => "Sample Question",
-                         :numbers => [],
-                         :sums => q_a,
-                         :filename => "image/q.png").start
-puts
-puts "****** image.rb (a.png) ******"
-TrianglePuzzleDrawer.new(:caption => "Sample Answer",
-                         :numbers => p_a,
-                         :sums => q_a,
-                         :filename => "image/a.png").start
+demo("image.rb (sample_q.png)") do
+  TrianglePuzzleDrawer.new(:caption => "Sample Question",
+                           :numbers => [],
+                           :sums => q_a,
+                           :filename => "sample_q.png").start
+end
 
+demo("image.rb (sample_a.png)") do
+  TrianglePuzzleDrawer.new(:caption => "Sample Answer",
+                           :numbers => p_a,
+                           :sums => q_a,
+                           :filename => "sample_a.png").start
+end

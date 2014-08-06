@@ -78,13 +78,15 @@ class TrianglePuzzleDrawer
     "convert -size #{@image_side}x#{@image_side} xc:#{@bgcolor}"
   end
 
+  def command_circumcircle
+    command = " -fill none -stroke blue -strokewidth 2"
+    command += " -draw \"circle #{xy_canvas(0,0).join(',')} #{xy_canvas(1,0).join(',')}\""
+
+    command
+  end
+
   def command_triangle
-    if false
-      command = " -fill none -stroke blue -strokewidth 2"
-      command += " -draw \"circle #{xy_canvas(0,0).join(',')} #{xy_canvas(1,0).join(',')}\""
-    else
-      command = ""
-    end
+    command = ""
 
     command += " -fill none -stroke black -strokewidth 4"
     triangle_xy = @place_xy.values_at(0, 6, 9)
@@ -120,6 +122,8 @@ class TrianglePuzzleDrawer
       command += " -draw \"stroke-dasharray 3 3 line #{line.flatten.join(',')}\""
     end
 
+    save_as("4a.png", command)
+
     command += " -fill #{@bgcolor} -stroke black -strokewidth 2"
     @sums_xy.each do |x, y|
       x1 = x - @place_r * 0.7
@@ -128,6 +132,8 @@ class TrianglePuzzleDrawer
       y2 = y + @place_r * 0.7
       command += " -draw \"rectangle #{x1},#{y1} #{x2},#{y2}\""
     end
+
+    save_as("4b.png", command)
 
     if Array === @sums
       s_a = @sums
@@ -156,6 +162,8 @@ class TrianglePuzzleDrawer
     @place_xy.each do |x, y|
       command += " -draw \"circle #{x},#{y} #{x + @place_r},#{y}\""
     end
+
+    save_as("5a.png", command)
 
     if Array === @places
       p_a = @places
@@ -209,7 +217,9 @@ class TrianglePuzzleDrawer
     return "" if len2 >= @image_side
 
     command = " -crop #{len2}x#{len2}+0+0"
+    save_as("7a.png", command)
     command += " -resize #{@image_side}x#{@image_side}"
+    save_as("7b.png", command)
 
     command
   end
@@ -218,16 +228,65 @@ class TrianglePuzzleDrawer
     " -quality 90 #{@filename}"
   end
 
-  def start
-    command = command_init
-    command += command_triangle
-    command += command_sums
-    command += command_places
-    command += command_caption if @caption
-    command += command_trim unless @flag_keep_center
-    command += command_saveas
-
-    puts command if $DEBUG
+  def save_as(filename = @filename, append_command = "")
+    command = @command + append_command + " -quality 90 #{filename}"
+    puts command
     system command
   end
+
+  def start_original
+    @command = command_init
+    @command += command_triangle
+    @command += command_sums
+    @command += command_places
+    @command += command_caption if @caption
+    @command += command_trim unless @flag_keep_center
+    save_as("sample.png")
+
+    self
+  end
+
+  def start
+    @bgcolor = "skyblue"
+    @command = command_init
+    save_as("1z.png")
+    @bgcolor = "white"
+    @command += command_circumcircle
+    save_as("2z.png")
+    @command += command_triangle
+    save_as("3z.png")
+    @command += command_sums
+    save_as("4z.png")
+    @command += command_places
+    save_as("5z.png")
+    if @caption
+      @command += command_caption
+      save_as("6z.png")
+    end
+    unless @flag_keep_center
+      @command += command_trim
+    end
+    # @command += command_saveas
+    save_as("final.png")
+
+    #puts command if $DEBUG
+    #system command
+
+    self
+  end
 end
+
+if __FILE__ == $0
+  TrianglePuzzleDrawer.new(:numbers => [1,5,5,4,3,2,2,5,1,4],
+                           :sums => [10,9,9,9,3,13],
+                           :caption => "Sample").start_original.start
+end
+
+
+
+
+
+
+
+
+
